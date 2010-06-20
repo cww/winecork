@@ -1,0 +1,11 @@
+# This is an example ~/.winecorkrc file.
+version 1
+desktop_resolution 1920x1080
+wineprefix 0,/home/cww/local/lib/wine-ok
+wineprefix 1,/home/cww/local/lib/wine
+install 0,/home/cww/local/wine-1.1.18
+install 1,/home/cww/local/wine-1.2-rc3
+install 2,/home/cww/local/wine-git
+# 0 [wineprefix] 4 [install] D [start w/ explorer in a desktop]
+app Steam,0,2,D,C:\Program Files\Steam\Steam.exe
+app EverQuest II,1,0,W,C:\Program Files\Sony\EverQuest II\EverQuest2.exe
