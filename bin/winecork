@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+
+use Modern::Perl;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+
+use WineCork::Main;
+
+my $cork = WineCork::Main->new();
+exit $cork->main();

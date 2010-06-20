@@ -1,0 +1,20 @@
+Perl dependencies:
+
+    B::Hooks::EndOfScope
+    Carp::Clan
+    Clone
+    Context::Preserve
+    Data::OptList
+    ExtUtils::PkgConfig *
+    Glib *
+    Gtk2
+    Moose
+    MooseX::Declare
+    MRO::Compat
+    namespace::autoclean
+    Pango *
+    Sub::Identify
+    Try::Tiny
+
+[*] Dependencies of Gtk2, which should probably be installed via a
+distributor-provided package instead of with CPAN.
