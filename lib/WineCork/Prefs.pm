@@ -219,6 +219,7 @@ class WineCork::Prefs
         return $success;
     }
 
+    # Push an object onto an array ref, creating the array ref if necessary.
     method _push_array(Any $arrayref, Any $value)
     {
         if (!defined $arrayref)
