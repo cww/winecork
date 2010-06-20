@@ -4,6 +4,16 @@ use Test::MockObject;
 
 use WineCork::StartType;
 
+=head1 NAME
+
+starttype.t
+
+=head1 SYNOPSIS
+
+    $ prove -Ilib t/starttype.t
+
+=cut
+
 my @tests;
 my $num_tests = 0;
 
@@ -19,29 +29,6 @@ sub types
     is(ref($start_types_ref), 'HASH', 'Start types object is a hash ref.');
     cmp_ok(scalar($start_types_ref), '>', 0,
             'More than zero start types are defined.');
-}
-
-# Tests whether types have defined run prefixes.
-push(@tests, 'run_prefixes');
-$num_tests += 2;
-sub run_prefixes
-{
-    my $m = Test::MockObject->new();
-    $m->fake_module
-    (
-        'WineCork::Prefs',
-        new                => sub { bless({}, $_[0]) },
-        desktop_resolution => sub { '1x1' },
-    );
-    my $p = WineCork::Prefs->new();
-
-    my $start_type = WineCork::StartType->new();
-    
-    for my $key (keys %{$start_type->start_types})
-    {
-        my $run_prefix = $start_type->generate_prefix($p, $key);
-        ok(defined($run_prefix), "Run prefix for key [$key] is defined.");
-    }
 }
 
 sub run_tests
@@ -65,3 +52,21 @@ sub run_tests
 run_tests();
 done_testing();
 
+=head1 AUTHOR
+
+Colin Wetherbee <cww@cpan.org>
+
+=head1 COPYRIGHT
+
+Copyright (C) 2010, Colin Wetherbee
+
+=head1 LICENSE
+
+This module is free software.  You can redistribute it and/or
+modify it under the terms of the Artistic License 2.0.
+
+This program is distributed in the hope that it will be useful,
+but without any warranty; without even the implied warranty of
+merchantability or fitness for a particular purpose.
+
+=cut

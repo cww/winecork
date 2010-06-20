@@ -10,6 +10,23 @@ use WineCork::Widgets::MessageBox;
 
 use constant DEFAULT_LOCATION => "$ENV{HOME}/.winecorkrc";
 
+=head1 NAME
+
+WineCork::Prefs
+
+=head1 SYNOPSIS
+
+    use WineCork::Prefs;
+
+    # Read ~/.winecorkrc, parse its contents, and populate a handful of data
+    # structures.
+    my $prefs = WineCork::Prefs->new();
+    $prefs->populate();
+
+    my $wineprefix = $prefs->wineprefix_by_id(0);
+    my $install = $prefs->install_by_id(0);
+=cut
+
 class WineCork::Prefs
 {
     has 'wineprefixes' =>
@@ -39,6 +56,32 @@ class WineCork::Prefs
         is => 'rw',
     );
 
+=head1 METHODS
+
+=cut
+
+=head2 populate()
+
+Populates the internal data structures by parsing a configuration file on
+disk.
+
+=cut
+    method populate
+    {
+        my $fh = IO::File->new();
+
+        if ($fh->open('<' . DEFAULT_LOCATION))
+        {
+            $self->_load_from_stream($fh);
+        }
+    }
+
+=head2 wineprefix_by_id($wineprefix_id)
+
+Given a wineprefix_id, returns the string representation of the related
+wineprefix value.
+
+=cut
     method wineprefix_by_id(Num $id)
     {
         my $wineprefixes_ref = $self->wineprefixes;
@@ -53,6 +96,12 @@ class WineCork::Prefs
         return undef;
     }
 
+=head2 install_by_id($install_id)
+
+Given an install_id, returns the string representation of the related install
+value.
+
+=cut
     method install_by_id(Num $id)
     {
         my $installs_ref = $self->installs;
@@ -65,16 +114,6 @@ class WineCork::Prefs
         }
 
         return undef;
-    }
-
-    method populate
-    {
-        my $fh = IO::File->new();
-
-        if ($fh->open('<' . DEFAULT_LOCATION))
-        {
-            $self->_load_from_stream($fh);
-        }
     }
 
     method _load_from_stream(Object $fh)
@@ -231,5 +270,24 @@ class WineCork::Prefs
         return $arrayref;
     }
 }
+
+=head1 AUTHOR
+
+Colin Wetherbee <cww@cpan.org>
+
+=head1 COPYRIGHT
+
+Copyright (C) 2010, Colin Wetherbee
+
+=head1 LICENSE
+
+This module is free software.  You can redistribute it and/or
+modify it under the terms of the Artistic License 2.0.
+
+This program is distributed in the hope that it will be useful,
+but without any warranty; without even the implied warranty of
+merchantability or fitness for a particular purpose.
+
+=cut
 
 1;
