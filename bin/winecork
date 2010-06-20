@@ -17,6 +17,9 @@ winecork
 
 =cut
 
+# Automatically reap moribund children.
+$SIG{CHLD} = 'IGNORE';
+
 my $cork = WineCork::Main->new();
 exit $cork->main();
 

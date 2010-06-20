@@ -98,19 +98,19 @@ class WineCork::Widgets::MainWindow
 
     method _generate_run_closure(Any $prefs, Any $app_ref)
     {
-        return sub
+        my $wineprefix_id = $app_ref->{wineprefix_id};
+        my $install_id = $app_ref->{install_id};
+
+        my $wineprefix = $prefs->wineprefix_by_id($wineprefix_id);
+        my $install = $prefs->install_by_id($install_id);
+        my $bin = "$install/bin/wine";
+        my $resolution = $prefs->desktop_resolution;
+
+        my @cmd;
+
+        given ($app_ref->{start_type})
         {
-            my $wineprefix_id = $app_ref->{wineprefix_id};
-            my $install_id = $app_ref->{install_id};
-
-            my $wineprefix = $prefs->wineprefix_by_id($wineprefix_id);
-            my $install = $prefs->install_by_id($install_id);
-            my $bin = "$install/bin/wine";
-            my $resolution = $prefs->desktop_resolution;
-
-            my @cmd;
-
-            if ($app_ref->{start_type} eq 'D')
+            when('D')
             {
                 @cmd =
                 (
@@ -121,12 +121,26 @@ class WineCork::Widgets::MainWindow
                     $app_ref->{command},
                 );
             }
-            else
+            when('W')
             {
-                # XXX
-                die;
+                @cmd =
+                (
+                    $bin,
+                    $app_ref->{command},
+                );
             }
+            default
+            {
+                return sub
+                {
+                    my $msg = "Invalid start_type: $app_ref->{start_type}";
+                    WineCork::Widgets::MessageBox::messagebox($msg);
+                };
+            }
+        }
 
+        return sub
+        {
             my $pid = fork();
 
             if (!defined $pid)
@@ -136,6 +150,7 @@ class WineCork::Widgets::MainWindow
             }
             elsif ($pid != 0)
             {
+                print "Setting WINEPREFIX to: $wineprefix\n";
                 print "Running command:\n" . Data::Dumper::Dumper(\@cmd);
             }
             else
