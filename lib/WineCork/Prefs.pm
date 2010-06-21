@@ -116,6 +116,7 @@ value.
         return undef;
     }
 
+    # Load an rc file from the stream in the provided file handle.
     method _load_from_stream(Object $fh)
     {
         my @error_lines;
@@ -163,11 +164,11 @@ value.
         }
     }
 
+    # Parses a key-value pair and adds it to the related array.  Returns a
+    # true value on success or a false value on failure.
     method _parse_kv(Str $key, Any $value)
     {
         my $success = 1;
-
-        #print STDERR "Parsing key [$key] value [$value].\n";
 
         given($key)
         {
