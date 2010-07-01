@@ -8,6 +8,7 @@ use MooseX::Declare;
 use Proc::Daemon;
 
 use WineCork::StartType;
+use WineCork::Widgets::Menu;
 use WineCork::Widgets::MessageBox;
 
 =head1 NAME
@@ -36,6 +37,10 @@ class WineCork::Widgets::MainWindow
 
         # This is the main vertical box in the main window.
         my $vbox = Gtk2::VBox->new();
+
+        my $menu_obj = WineCork::Widgets::Menu->new();
+        my $menu = $menu_obj->build();
+        $vbox->add($menu->{widget});
 
         if (defined($apps_ref) && scalar(@$apps_ref) > 0)
         {
@@ -86,6 +91,7 @@ class WineCork::Widgets::MainWindow
         my $window = Gtk2::Window->new();
         $window->signal_connect(destroy => sub { Gtk2->main_quit(); });
         $window->add($vbox);
+
         $window->show_all();
     }
 
