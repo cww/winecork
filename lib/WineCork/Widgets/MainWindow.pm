@@ -7,6 +7,7 @@ use List::Util qw(max);
 use MooseX::Declare;
 use Proc::Daemon;
 
+use WineCork::KeyBindings;
 use WineCork::StartType;
 use WineCork::Widgets::Menu;
 use WineCork::Widgets::MessageBox;
@@ -91,6 +92,11 @@ class WineCork::Widgets::MainWindow
         my $window = Gtk2::Window->new();
         $window->signal_connect(destroy => sub { Gtk2->main_quit(); });
         $window->add($vbox);
+
+        $window->signal_connect
+        (
+            key_press_event => \&WineCork::KeyBindings::key_press_handler,
+        );
 
         $window->show_all();
     }
