@@ -130,7 +130,7 @@ class WineCork::Widgets::MainWindow
                     'explorer',
                     "/desktop=foo,$resolution",
                     'start',
-                    $app_ref->{command},
+                    @{$app_ref->{command}},
                 );
             }
             when('W')
@@ -138,7 +138,7 @@ class WineCork::Widgets::MainWindow
                 @cmd =
                 (
                     $bin,
-                    $app_ref->{command},
+                    @{$app_ref->{command}},
                 );
             }
             default

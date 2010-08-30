@@ -213,7 +213,7 @@ value.
             }
             when('app')
             {
-                if ($value =~ /^(.*),(\d+),(\d+),(\w+),(.*)$/)
+                if ($value =~ /^(.*),(\d+),(\d+),(\w+),(.*?)$/)
                 {
                     my %h =
                     (
@@ -221,7 +221,7 @@ value.
                         wineprefix_id => $2,
                         install_id => $3,
                         start_type => $4,
-                        command => $5,
+                        command => [ split(/,/, $5) ],
                     );
 
                     if (exists WineCork::StartType->new()->start_types->

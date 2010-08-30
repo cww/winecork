@@ -43,10 +43,10 @@ sub _build_config
     return $config;
 }
 
-# Tests config parser.
-push(@tests, 'parse_config');
+# Tests config parser with command-line options for app.
+push(@tests, 'parse_config_cmdline');
 $num_tests += 1;
-sub parse_config 
+sub parse_config_cmdline 
 {
     my %conf =
     (
@@ -64,7 +64,7 @@ sub parse_config
         ],
         app =>
         [
-            'zzz,0,1,D,foo',
+            'zzz,0,1,D,foo,-bar,--baz,/qux,3,z',
         ],
     );
     my $conf_str = _build_config(\%conf);
@@ -108,7 +108,7 @@ sub parse_config
             map
             {
                 join(q{,}, $_->{name}, $_->{wineprefix_id}, $_->{install_id},
-                           $_->{start_type}, $_->{command})
+                           $_->{start_type}, join(q{,}, @{$_->{command}}))
             } @{$p->apps()},
         ],
     );
